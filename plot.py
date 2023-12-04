@@ -1,64 +1,96 @@
-import pandas as pd
+# import matplotlib.pyplot as plt
+# import pandas as pd
+# import os
+
+
+# # Set the path to your data file
+# data_path = os.path.join(os.path.dirname(__file__), 'crafted_data', 'plot_data.csv')
+
+# # Create a figure with 4 subplots outside the loop
+# fig, axs = plt.subplots(4, 1, figsize=(10, 8))
+
+# while True:
+#     df = pd.read_csv(data_path)
+
+#     last_opened_program = df['Opened Programs'].iloc[-1] 
+
+#     # Filter the DataFrame for the specified "Opened Programs" value
+#     filtered_df = df[df['Opened Programs'] == last_opened_program]
+
+#     # Clear the axes for the new data
+#     for ax in axs:
+#         ax.clear()
+
+#     # Plot data on each subplot with different colors
+#     axs[0].plot(filtered_df['Frame Number'], filtered_df['Eye Aspect Ratio'], label='Eye Aspect Ratio', color='red')
+#     axs[1].plot(filtered_df['Frame Number'], filtered_df['Mouth Aspect Ratio'], label='Mouth Aspect Ratio', color='blue')
+#     axs[2].plot(filtered_df['Frame Number'], filtered_df['Head Tilt Degree'], label='Head Tilt Degree', color='green')
+#     axs[3].plot(filtered_df['Frame Number'], filtered_df['Eye Pupil'], label='Eye Pupil', color='purple')
+
+#     # Add labels and legends to each subplot
+#     for ax in axs:
+#         ax.set_xlabel('Frame Number')
+#         ax.set_ylabel('Value')
+#         ax.legend()
+
+#     plt.tight_layout()
+#     plt.draw()
+#     plt.pause(3)
+
+#     # Check if the plot window is still open
+#     if not plt.get_fignums():
+#         break
+
+# # No need to clear the figure at the end of the loop
+
+
+
+
+
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
+import os
 
-# Read the CSV file into a pandas DataFrame
-csv_file_path = 'plot_data.csv'  # Replace with the actual path to your CSV file
-df = pd.read_csv(csv_file_path)
+# Make sure seaborn is imported for KDE plots
+# Import seaborn as sns if you haven't already
 
-# Get the number of the open program as input
-program_number = int(input("Enter the number of the open program: "))
+# Set the path to your data file
+data_path = os.path.join(os.path.dirname(__file__), 'crafted_data', 'plot_data.csv')
 
-# Filter the DataFrame based on the program number
-program_df = df[df['Opened Programs'] == program_number]
+# Create a figure with 4 subplots outside the loop
+fig, axs = plt.subplots(4, 1, figsize=(10, 8))
 
-# Plotting histograms, kernel density estimate, and boxplots for each feature
-fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(12, 10))
+while True:
+    df = pd.read_csv(data_path)
 
-# Plot histogram and kernel density estimate for Eye Aspect Ratio
-sns.histplot(program_df['Eye Aspect Ratio'], bins=20, kde=True, color='blue', ax=axes[0, 0])
-axes[0, 0].set_title('Eye Aspect Ratio')
+    last_opened_program = df['Opened Programs'].iloc[-1]
 
-# Plot histogram and kernel density estimate for Mouth Aspect Ratio
-sns.histplot(program_df['Mouth Aspect Ratio'], bins=20, kde=True, color='green', ax=axes[0, 1])
-axes[0, 1].set_title('Mouth Aspect Ratio')
+    # Filter the DataFrame for the specified "Opened Programs" value
+    filtered_df = df[df['Opened Programs'] == last_opened_program]
 
-# Plot histogram and kernel density estimate for Head Tilt Degree
-sns.histplot(program_df['Head Tilt Degree'], bins=20, kde=True, color='red', ax=axes[1, 0])
-axes[1, 0].set_title('Head Tilt Degree')
+    # Clear the axes for the new data
+    for ax in axs:
+        ax.clear()
 
-# Plot histogram and kernel density estimate for Eye Pupil
-sns.histplot(program_df['Eye Pupil'], bins=20, kde=True, color='cyan', ax=axes[1, 1])
-axes[1, 1].set_title('Eye Pupil')
+    # Plot KDE on each subplot with different colors
+    sns.kdeplot(filtered_df['Eye Aspect Ratio'], ax=axs[0], color='red', label='Eye Aspect Ratio')
+    sns.kdeplot(filtered_df['Mouth Aspect Ratio'], ax=axs[1], color='blue', label='Mouth Aspect Ratio')
+    sns.kdeplot(filtered_df['Head Tilt Degree'], ax=axs[2], color='green', label='Head Tilt Degree')
+    sns.kdeplot(filtered_df['Eye Pupil'], ax=axs[3], color='purple', label='Eye Pupil')
 
-# Set common labels and show the plot
-for ax in axes.flat:
-    ax.set(xlabel='Value', ylabel='Frequency')
+    # Add labels and legends to each subplot
+    for ax in axs:
+        ax.set_xlabel('Value')
+        ax.set_ylabel('Density')
+        ax.legend()
 
-plt.tight_layout()
+    plt.tight_layout()
+    plt.draw()
+    plt.pause(3)
 
-# Add boxplots below histograms
-fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(12, 10))
+    # Check if the plot window is still open
+    if not plt.get_fignums():
+        break
 
-# Boxplot for Eye Aspect Ratio
-sns.boxplot(x=program_df['Eye Aspect Ratio'], ax=axes[0, 0], color='blue')
-axes[0, 0].set_title('Eye Aspect Ratio')
-
-# Boxplot for Mouth Aspect Ratio
-sns.boxplot(x=program_df['Mouth Aspect Ratio'], ax=axes[0, 1], color='green')
-axes[0, 1].set_title('Mouth Aspect Ratio')
-
-# Boxplot for Head Tilt Degree
-sns.boxplot(x=program_df['Head Tilt Degree'], ax=axes[1, 0], color='red')
-axes[1, 0].set_title('Head Tilt Degree')
-
-# Boxplot for Eye Pupil
-sns.boxplot(x=program_df['Eye Pupil'], ax=axes[1, 1], color='cyan')
-axes[1, 1].set_title('Eye Pupil')
-
-# Set common labels and show the plot
-for ax in axes.flat:
-    ax.set(xlabel='Value', ylabel='')
-
-plt.tight_layout()
-plt.show()
+# No need to clear the figure at the end of the loop
