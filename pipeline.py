@@ -2,9 +2,9 @@ import multiprocessing
 import time
 import keyboard
 from tkinter import *
-from tkinter import messagebox
+import importlib
 
-FATIGUE_THRESH = 5
+
 
 
 def run_script(script_name):
@@ -49,10 +49,13 @@ if __name__ == '__main__':
         run_script('XgClassifier.py')
         run_script('fatigue.py')
         
-        import fatigue
-        fatigue_percentage = round(fatigue.cluster_1_percentage, 2)
         
-        if (fatigue_percentage>FATIGUE_THRESH):
+        import fatigue
+        importlib.reload(fatigue)
+        
+        fatigue_percentage = round(fatigue.cluster_1_percentage, 2)
+     
+        if (fatigue_percentage>75):
                
             import Alert
             Alert.send_email(username, contact_name, contact_email,fatigue_percentage)
@@ -63,7 +66,8 @@ if __name__ == '__main__':
                 i=i-1
                 time.sleep(2)
 
-            
+        if (fatigue_percentage>50 and fatigue_percentage<75):
+               import localisation_station
 
         time.sleep(20) 
         
