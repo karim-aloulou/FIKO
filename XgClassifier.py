@@ -5,20 +5,7 @@ model_file_path = os.path.join(os.path.dirname(__file__), 'FIKO_notebook', 'xgFI
 
 data_path = os.path.join(os.path.dirname(__file__), 'crafted_data', 'plot_data.csv')
 
-# def remove_outliers(data,X):
-#     column_data = data[X]
-#     Q1 = column_data.quantile(0.25)
-#     Q3 = column_data.quantile(0.75)
-#     IQR = Q3 - Q1
 
-#     # Step 3: Define the lower and upper bounds to identify outliers
-#     lower_bound = Q1 - 1.5 * IQR
-#     upper_bound = Q3 + 1.5 * IQR
-
-#     # Step 4: Identify and remove outliers from the DataFrame
-#     outliers = data[(column_data < lower_bound) | (column_data > upper_bound)]
-#     data = data[(column_data >= lower_bound) & (column_data <= upper_bound)]
-#     return data
 
 loaded_model = xgb.XGBClassifier(objective="binary:logistic")
 
@@ -28,11 +15,7 @@ print('[Xgclassifier]: model loaded')
 data = pd.read_csv(data_path)
 print('[Xgclassifier]: data loaded')
 
-# data=remove_outliers(data,'Eye Aspect Ratio')
-# data=remove_outliers(data,'Mouth Aspect Ratio')
-# data=remove_outliers(data,'Head Tilt Degree')
-# data=remove_outliers(data,'Eye Pupil')
-# print('[Xgclassifier]: outliers removed')
+
 
 data_new=data.drop(['Opened Programs','Frame Number'],axis=1)
 data_pred=loaded_model.predict(data_new)
