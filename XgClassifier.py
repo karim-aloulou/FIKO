@@ -1,6 +1,9 @@
+import os
 import xgboost as xgb
 import pandas as pd
-import os
+
+
+
 model_file_path = os.path.join(os.path.dirname(__file__), 'FIKO_notebook', 'xgFIKO_classifier.model')
 
 data_path = os.path.join(os.path.dirname(__file__), 'crafted_data', 'plot_data.csv')

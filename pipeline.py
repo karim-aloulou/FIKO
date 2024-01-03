@@ -24,12 +24,21 @@ def plot_process():
    
     run_script('plot.py')
 
+def FikoToMongo_process():
+   
+    run_script('FikoToMongo.py')
+
+
+
+
 if __name__ == '__main__':
     
     import start_page
     
     startup=start_page.InfoPage(Tk())
     username, contact_name, contact_email= startup.username,startup.contact_name,startup.contact_email
+    FikoToMongo = multiprocessing.Process(target=FikoToMongo_process)
+    FikoToMongo.start()
     
     
     fiko_proc = multiprocessing.Process(target=fiko_process)
@@ -40,6 +49,7 @@ if __name__ == '__main__':
     plot.start()
     
     time.sleep(60)
+    
   
     while True:
         
@@ -47,6 +57,7 @@ if __name__ == '__main__':
             print("Exiting the program.")
             break
         run_script('XgClassifier.py')
+
         run_script('fatigue.py')
         
         
